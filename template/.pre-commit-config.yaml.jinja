@@ -1,0 +1,310 @@
+---
+# files: 'directory1/directory2'
+
+# Which of these should have stages?
+
+default_install_hook_types:
+    - commit-msg
+    - prepare-commit-msg
+    - pre-commit
+    - pre-merge-commit
+    - pre-push
+    - pre-rebase
+    - post-checkout
+    - post-commit
+    - post-merge
+    - post-rewrite
+
+repos:
+
+    - repo: https://github.com/Lucas-C/pre-commit-hooks
+      rev: v1.5.5
+      hooks:
+          - id: remove-crlf
+          - id: remove-tabs
+            exclude: .git/COMMIT_EDITMSG
+
+    - repo: https://github.com/pre-commit/mirrors-prettier
+      rev: v4.0.0-alpha.8
+      hooks:
+          - id: prettier
+            stages: [pre-commit]
+
+    - repo: https://github.com/sirwart/ripsecrets
+      rev: v0.1.11 # Use latest tag on GitHub
+      hooks:
+          - id: ripsecrets
+          # uncomment to check additional patterns
+          # args:
+          # - --additional-pattern 'mytoken*'
+          # - --additional-pattern 'mykey*'
+
+
+{%- if ansible is true %}
+    - repo: https://github.com/ansible-community/ansible-lint.git
+      rev: v25.7.0
+      hooks:
+          - id: ansible-lint
+            stages:
+                - pre-commit
+                - pre-push
+
+{%- endif %}
+{%- if docker is true %}
+    - repo: https://github.com/IamTheFij/docker-pre-commit
+      rev: v3.0.1
+      hooks:
+          - id: docker-compose-check
+
+    - repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
+      rev: v0.1.0
+      hooks:
+          - id: dockerfilelint
+            stages: [pre-commit]
+
+    - repo: https://github.com/hadolint/hadolint
+      rev: v2.13.1-beta
+      hooks:
+          - id: hadolint
+
+{%- endif %}
+{%- if github is true %}
+    - repo: https://github.com/sirosen/check-jsonschema
+      rev: 0.33.2
+      hooks:
+          - id: check-github-actions
+          - id: check-github-workflows
+
+    - repo: https://github.com/rhysd/actionlint
+      rev: v1.7.7
+      hooks:
+          - id: actionlint
+
+{%- endif %}
+{%- if json is true %}
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v5.0.0
+      hooks:
+          - id: check-json
+          - id: pretty-format-json # Checks that all your JSON files are pretty.
+
+{%- endif %}
+{%- if language == "python" %}
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v5.0.0
+      hooks:
+          - id: check-ast # Check whether files parse as valid python.
+          - id: check-builtin-literals # Require literal syntax when initializing empty or zero Python builtin types.
+          - id: check-docstring-first
+          - id: debug-statements # Check for debugger imports and py37+ breakpoint() calls in python source.
+          - id: name-tests-test # Assert that files in tests/ end in _test.py, or optionally test*.py
+          - id: requirements-txt-fixer
+
+    - repo: https://github.com/PyCQA/bandit
+      rev: 1.8.6
+      hooks:
+          - id: bandit
+            arg: [--configfile, pyproject.toml]
+
+    - repo: https://github.com/albertas/deadcode
+      rev: 2.4.1
+      hooks:
+          - id: deadcode
+
+    - repo: https://github.com/sirosen/check-jsonschema
+      rev: 0.33.2
+      hooks:
+          - id: check-readthedocs
+
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      rev: "v0.12.7"
+      hooks:
+          - id: ruff
+            args: [--fix, --force-exclude, --exit-non-zero-on-fix]
+            types_or: [python, pyi, jupyter, markdown] # Run on notebooks too.
+          - id: ruff-format
+            types_or: [python, pyi, jupyter, markdown] # Run on notebooks too.
+
+    - repo: https://github.com/MarcoGorelli/cython-lint
+      rev: v0.16.7
+      hooks:
+          - id: cython-lint
+
+{%- if dependency_manager == "uv" %}
+    - repo: https://github.com/astral-sh/uv-pre-commit
+      rev: 0.10.5
+      hooks:
+          # Keep uv.lock file up to date
+          - id: uv-lock
+
+    - repo: https://github.com/tsvikas/sync-with-uv
+      rev: v0.4.0
+      hooks:
+          - id: sync-with-uv
+
+{%- endif %}
+{%- if dependency_manager == "poetry" %}
+    - repo: https://gitlab.com/smop/pre-commit-hooks
+      rev: v1.0.0
+      hooks:
+          - id: check-poetry # Validates the structure of the pyproject.toml file.
+
+{%- endif %}
+{%- endif %}
+{%- if shell is true %}
+    - repo: https://github.com/scop/pre-commit-shfmt
+      rev: v3.12.0-2
+      hooks:
+          - id: shfmt
+
+    - repo: https://github.com/koalaman/shellcheck-precommit
+      rev: v0.11.0
+      hooks:
+          - id: shellcheck
+            args: [--external-sources, --format=gcc, --shell=bash]
+
+{%- endif %}
+{%- if sql is true %}
+    - repo: https://github.com/sqlfluff/sqlfluff
+      rev: 3.4.2
+      hooks:
+          - id: sqlfluff-lint
+          # For dbt projects, this installs the dbt "extras".
+          # You will need to select the relevant dbt adapter for your dialect
+          # (https://docs.getdbt.com/docs/available-adapters):
+          # additional_dependencies: ['<dbt-adapter>', 'sqlfluff-templater-dbt']
+          - id: sqlfluff-fix
+          # Arbitrary arguments to show an example
+          # args: [--rules, "L003,L014"]
+          # additional_dependencies: ['<dbt-adapter>', 'sqlfluff-templater-dbt']
+
+{%- endif %}
+{%- if yaml is true %}
+    - repo: https://github.com/adrienverge/yamllint
+      rev: v1.37.1
+      hooks:
+          - id: yamllint
+            args: [-c=.yamllint.yml]
+
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v5.0.0
+      hooks:
+          - id: check-yaml
+
+{%- endif %}
+    - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+      rev: 3.2.1
+      hooks:
+          - id: editorconfig-checker
+
+
+###########
+
+
+
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v5.0.0
+      hooks:
+          # General
+          - id: check-added-large-files
+          - id: check-case-conflict
+          - id: check-executables-have-shebangs
+          - id: check-merge-conflict
+          - id: check-symlinks
+          - id: check-toml
+          - id: check-xml
+          - id: double-quote-string-fixer
+          - id: end-of-file-fixer
+          - id: fix-byte-order-marker
+          - id: mixed-line-ending # Replaces or checks mixed line ending.
+          - id: trailing-whitespace
+          - id: no-commit-to-branch # Protect specific branches from direct checkins.
+            # Both master and main are protected by default if no branch argument is set.
+            # args: [--branch, master, --branch, develop]
+
+    # General
+
+    - repo: https://github.com/sirosen/texthooks
+      rev: 0.7.1
+      hooks:
+          - id: fix-smartquotes
+          - id: fix-ligatures
+
+    # Git
+
+    - repo: https://github.com/jorisroovers/gitlint
+      rev: v0.19.1
+      hooks:
+          - id: gitlint
+
+    - repo: https://github.com/commitizen-tools/commitizen
+      rev: v4.8.3
+      hooks:
+          - id: commitizen
+            stages: [commit-msg]
+
+    # Jinja
+
+    # - repo: https://github.com/motet-a/jinjalint
+    #   rev: 01e0a4d  # pre-commit support is not tagged.
+    #   hooks:
+    #     - id: jinjalint
+
+    # Python
+
+    - repo: https://github.com/econchick/interrogate
+      rev: 1.7.0
+      hooks:
+          - id: interrogate
+            args:
+                - --verbose
+
+    - repo: https://github.com/HunterMcGushion/docstr_coverage
+      rev: v2.3.2
+      hooks:
+          - id: docstr-coverage
+            args: ["--verbose", "4", "."]
+            always_run: false
+
+    - repo: https://github.com/RobertCraigie/pyright-python
+      rev: v1.1.403
+      hooks:
+          - id: pyright
+            # Use project venv Python instead of isolated pre-commit venv
+            language: system
+
+    - repo: https://github.com/pre-commit/pygrep-hooks
+      rev: v1.10.0
+      hooks:
+          - id: python-no-log-warn
+          - id: rst-backticks
+          - id: rst-directive-colons
+          - id: rst-inline-touching-normal
+          - id: text-unicode-replacement-char
+
+    - repo: https://github.com/pre-commit/mirrors-mypy
+      rev: v1.17.1
+      hooks:
+          - id: mypy
+
+    - repo: https://github.com/jazzband/pip-tools
+      rev: v7.5.0
+      hooks:
+          - id: pip-compile
+            files: ^requirements/production\.(in|txt)$
+            args: [requirements/production.in]
+
+    # Mixed
+
+    - repo: https://github.com/jumanjihouse/pre-commit-hooks
+      rev: 3.0.0
+      hooks:
+          - id: script-must-have-extension
+          - id: script-must-not-have-extension
+
+    - repo: https://github.com/lycheeverse/lychee.git
+      rev: nightly
+      hooks:
+          - id: lychee
+            args: ["--cache", "--suggest"]
+

@@ -1,0 +1,57 @@
+---
+_subdirectory: template
+
+language:
+    type: str
+    help: Which programming language?
+    choices:
+        - python
+        - node
+
+dependency_manager:
+    type: str
+    help: Which dependency manager?
+    choices: |
+        {%- if language == "python" %}
+        - pipenv
+        - poetry
+        - uv
+        {%- else %}
+        - npm
+        - yarn
+        {%- endif %}
+
+ansible:
+  type: bool
+  default: no
+  help: 'Does this project use Ansible? (default: no)'
+
+docker:
+  type: bool
+  default: no
+  help: 'Does this project use Docker? (default: no)'
+
+github:
+  type: bool
+  default: yes
+  help: 'Does this project use GitHub? (default: yes)'
+
+json:
+  type: bool
+  default: yes
+  help: 'Does this project use JSON? (default: yes)'
+
+shell:
+  type: bool
+  default: yes
+  help: 'Does this project use shell scripts? (default: yes)'
+
+sql:
+  type: bool
+  default: no
+  help: 'Does this project use SQL? (default: no)'
+
+yaml:
+  type: bool
+  default: yes
+  help: 'Does this project use YAML? (default: yes)'
