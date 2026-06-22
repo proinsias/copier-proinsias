@@ -4,131 +4,131 @@
 # Which of these should have stages?
 
 default_install_hook_types:
-    - commit-msg
-    - prepare-commit-msg
-    - pre-commit
-    - pre-merge-commit
-    - pre-push
-    - pre-rebase
-    - post-checkout
-    - post-commit
-    - post-merge
-    - post-rewrite
+  - commit-msg
+  - prepare-commit-msg
+  - pre-commit
+  - pre-merge-commit
+  - pre-push
+  - pre-rebase
+  - post-checkout
+  - post-commit
+  - post-merge
+  - post-rewrite
 
 repos:
-    - repo: https://github.com/sirosen/texthooks
-      rev: 0.7.1
-      hooks:
-          - id: fix-smartquotes
-          - id: fix-ligatures
+  - repo: https://github.com/sirosen/texthooks
+    rev: 0.7.1
+    hooks:
+      - id: fix-smartquotes
+      - id: fix-ligatures
 
-    - repo: https://github.com/Lucas-C/pre-commit-hooks
-      rev: v1.5.5
-      hooks:
-          - id: remove-crlf
-          - id: remove-tabs
-            exclude: .git/COMMIT_EDITMSG
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.5
+    hooks:
+      - id: remove-crlf
+      - id: remove-tabs
+        exclude: .git/COMMIT_EDITMSG
 
-    - repo: local
-      hooks:
-          - id: prettier
-            name: prettier
-            stages: [pre-commit]
-            language: unsupported
-            entry: prettier . --ignore-unknown --write
-            pass_filenames: false
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        stages: [pre-commit]
+        language: unsupported
+        entry: prettier . --ignore-unknown --write
+        pass_filenames: false
 
-    - repo: https://github.com/sirwart/ripsecrets
-      rev: v0.1.11 # Use latest tag on GitHub
-      hooks:
-          - id: ripsecrets
-          # uncomment to check additional patterns
-          # args:
-          # - --additional-pattern 'mytoken*'
-          # - --additional-pattern 'mykey*'
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.11 # Use latest tag on GitHub
+    hooks:
+      - id: ripsecrets
+      # uncomment to check additional patterns
+      # args:
+      # - --additional-pattern 'mytoken*'
+      # - --additional-pattern 'mykey*'
 
-    - repo: https://github.com/jumanjihouse/pre-commit-hooks
-      rev: 3.0.0
-      hooks:
-          - id: script-must-not-have-extension
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: script-must-not-have-extension
 
-    - repo: https://github.com/sirosen/check-jsonschema
-      rev: 0.33.2
-      hooks:
-          - id: check-github-actions
-          - id: check-github-workflows
+  - repo: https://github.com/sirosen/check-jsonschema
+    rev: 0.33.2
+    hooks:
+      - id: check-github-actions
+      - id: check-github-workflows
 
-    - repo: https://github.com/rhysd/actionlint
-      rev: v1.7.7
-      hooks:
-          - id: actionlint
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
 
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
-      hooks:
-          - id: check-json
-          - id: pretty-format-json # Checks that all your JSON files are pretty.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: pretty-format-json # Checks that all your JSON files are pretty.
 
-    - repo: https://github.com/lycheeverse/lychee.git
-      rev: nightly
-      hooks:
-          - id: lychee
-            args: ["--cache", "--suggest"]
+  - repo: https://github.com/lycheeverse/lychee.git
+    rev: v0.15.1
+    hooks:
+      - id: lychee
+        args: ['--cache', '--suggest']
 
-    - repo: https://github.com/scop/pre-commit-shfmt
-      rev: v3.12.0-2
-      hooks:
-          - id: shfmt
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.12.0-2
+    hooks:
+      - id: shfmt
 
-    - repo: https://github.com/koalaman/shellcheck-precommit
-      rev: v0.11.0
-      hooks:
-          - id: shellcheck
-            args: [--external-sources, --format=gcc, --shell=bash]
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+        args: [--external-sources, --format=gcc, --shell=bash]
 
-    - repo: https://github.com/adrienverge/yamllint
-      rev: v1.37.1
-      hooks:
-          - id: yamllint
-            args: [-c=.yamllint.yml]
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [-c=.yamllint.yml]
 
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
-      hooks:
-          - id: check-yaml
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
 
-    - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-      rev: 3.2.1
-      hooks:
-          - id: editorconfig-checker
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 3.2.1
+    hooks:
+      - id: editorconfig-checker
 
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
-      hooks:
-          - id: check-added-large-files
-          - id: check-case-conflict
-          - id: check-executables-have-shebangs
-          - id: check-merge-conflict
-          - id: check-symlinks
-          - id: check-toml
-          - id: check-xml
-          - id: end-of-file-fixer
-          - id: fix-byte-order-marker
-          - id: mixed-line-ending # Replaces or checks mixed line ending.
-          - id: trailing-whitespace
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-xml
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending # Replaces or checks mixed line ending.
+      - id: trailing-whitespace
 
-    - repo: https://github.com/jorisroovers/gitlint
-      rev: v0.19.1
-      hooks:
-          - id: gitlint
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+      - id: gitlint
 
-    - repo: https://github.com/commitizen-tools/commitizen
-      rev: v4.8.3
-      hooks:
-          - id: commitizen
-            stages: [commit-msg]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.8.3
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
 
-    - repo: https://github.com/motet-a/jinjalint
-      rev: 01e0a4d
-      hooks:
-          - id: jinjalint
+  - repo: https://github.com/motet-a/jinjalint
+    rev: 01e0a4d
+    hooks:
+      - id: jinjalint

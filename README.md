@@ -7,9 +7,9 @@ Copier template for my projects.
 - mise task validator
 - other pre-commit?
 - python
-  - github.com/superlinear-ai/substrate
-  - github.com/NLeSC/python-template
-  - github.com/pawamoy/copier-uv
-  - github.com/ritwiktiwari/copier-astral
+    - github.com/superlinear-ai/substrate
+    - github.com/NLeSC/python-template
+    - github.com/pawamoy/copier-uv
+    - github.com/ritwiktiwari/copier-astral
 - try copier-python-template - apply this.
 - Apply to all my repos.
