@@ -1,0 +1,62 @@
+---
+pull_request_rules:
+  - name: label template changes
+    conditions:
+      - files~=^template/
+    actions:
+      label:
+        add:
+          - template
+
+  - name: label copier config changes
+    conditions:
+      - files = copier.yml
+    actions:
+      label:
+        add:
+          - copier-config
+
+  - name: label tooling changes
+    conditions:
+      - or:
+          - files~=^\.(pre-commit-config|mise|editorconfig|yamllint|gitignore)
+          - files~=^\.github/
+    actions:
+      label:
+        add:
+          - tooling
+
+  - name: label documentation changes
+    conditions:
+      - files~=\.md$
+    actions:
+      label:
+        add:
+          - docs
+
+  - name: block merge on WIP
+    conditions:
+      - or:
+          - title~=^(WIP|wip)[^a-z]
+          - label = do-not-merge
+          - draft = true
+    actions:
+      comment:
+        message: >
+          This pull request is marked as work in progress and will not be
+          merged until the WIP status is removed.
+
+  - name: auto-merge when ready
+    conditions:
+      - base = main
+      - label != do-not-merge
+      - draft = false
+      - title!=^(WIP|wip)[^a-z]
+      - '#changes-requested-reviews-by = 0'
+    actions:
+      merge:
+        method: squash
+        commit_message_template: |
+          {{ title }} (#{{ number }})
+
+          {{ body }}
